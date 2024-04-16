@@ -150,6 +150,40 @@ function checkStudents(students) {
 }
 
 // Task 3: Closures and Higher-Order Functions
+function createCounter() {
+    let counter = 0;
 
+    return () => {
+        return ++counter;
+    }
+}
 
-export { calculateDiscountedPrice, calculateTotalPrice, getFullName, filterUniqueWords, getAverageGrade };
+function repeatFunction(func, num) {
+    checkFunc(func);
+    checkNum(num);
+
+    return () => {
+        for (let i = 0; i < num; ++i) {
+            func();
+        }
+    }
+}
+
+// helper functions
+function checkFunc(func) {
+    if (typeof func !== "function") {
+        throw new Error("Parameter func must be of type function!");
+    }
+}
+
+function checkNum(num) {
+    if (typeof num !== "number") {
+        throw new Error("Parameter num must be of type number!");
+    }
+
+    if (num % 1 !== 0) {
+        throw new Error("Parameter num must be an integer number!");
+    }
+}
+
+export { calculateDiscountedPrice, calculateTotalPrice, getFullName, filterUniqueWords, getAverageGrade, createCounter, repeatFunction };
