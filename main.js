@@ -186,4 +186,22 @@ function checkNum(num) {
     }
 }
 
-export { calculateDiscountedPrice, calculateTotalPrice, getFullName, filterUniqueWords, getAverageGrade, createCounter, repeatFunction };
+// Task 4: Recursion and Tail Call Optimization
+function calculateFactorial(num) {
+    return factIterator(num, 1);
+}
+
+function factIterator(num, product) {
+    if (num === 1) return product;
+
+    return factIterator(num - 1, num * product);
+}
+
+function power(base, exponent) {
+    if (exponent === 0) return 1;
+    if (exponent === 1) return base;
+
+    return power(base * base, --exponent);
+}
+
+export { calculateDiscountedPrice, calculateTotalPrice, getFullName, filterUniqueWords, getAverageGrade, createCounter, repeatFunction, calculateFactorial, power };
