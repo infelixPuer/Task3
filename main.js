@@ -37,12 +37,12 @@ function checkProducts(products) {
         throw new Error("Parameter products must be a filled array with objects!");
     }
 
-    if (!products[0].hasOwnProperty("price")) {
-        throw new Error("Entry in products array must have a price key!");
+    for (let i = 0; i < products.length; ++i) {
+        if (!"price" in products[i]) throw new Error("Entry in products array must have a price key!");
     }
 
-    if (typeof products[0].price !== "number") {
-        throw new Error("Product's key price must be of type number!");
+    for (let i = 0; i < products.length; ++i) {
+        if (typeof products[i].price !== "number") throw new Error("Product's key price must be of type number!");
     }
 }
 
@@ -108,7 +108,7 @@ function checkPerson(person) {
         throw new Error("Parameter person must be of type object!");
     }
 
-    if (!person.hasOwnProperty("firstName") || !person.hasOwnProperty("lastName")) {
+    if (!("firstName" in person) || !("lastName" in person)) {
         throw new Error("Parameter person must have firstName and lastName keys!");
     }
 
@@ -128,24 +128,29 @@ function checkStudents(students) {
         throw new Error("Parameter students must be a filled array!");
     }
 
-    if (!students[0].hasOwnProperty("name") || !students[0].hasOwnProperty("grades")) {
-        throw new Error("Entry in students array must have name and grades key!");
+    for (let i = 0; i < students.length; ++i) {
+        if (!("name" in students[i]) || !("grades" in students[i]))
+            throw new Error("Entry in students array must have name and grades key!");
     }
 
-    if (typeof students[0].name !== "string") {
-        throw new Error("Key name of student object must be of type string!");
+    for (let i = 0; i < students.length; ++i) {
+        if (typeof students[i].name !== "string")
+            throw new Error("Key name of student object must be of type string!");
     }
 
-    if (typeof students[0].grades !== "object") {
-        throw new Error("Key grades of student object must be of type object!");
+    for (let i = 0; i < students.length; ++i) {
+        if (typeof students[i].grades !== "object")
+            throw new Error("Key grades of student object must be of type object!");
     }
 
-    if (students[0].grades[0] === undefined) {
-        throw new Error("Key grades of student object must be a filled array!");
+    for (let i = 0; i < students.length; ++i) {
+        if (students[i].grades[0] === undefined)
+            throw new Error("Key grades of student object must be a filled array!");
     }
 
-    if (typeof students[0].grades[0] !== "number") {
-        throw new Error("Key grades of student object must be an array of numbers!");
+    for (let i = 0; i < students.length; ++i) {
+        if (typeof students[i].grades[0] === "number")
+            throw new Error("Key grades of student object must be an array of numbers!");
     }
 }
 
@@ -206,6 +211,21 @@ function factIterator(num, product) {
 }
 
 function power(base, exponent) {
+    checkBaseExponent(base, exponent);
+
+    return powerIterator(base, exponent);
+}
+
+function powerIterator(base, exponent, product = 1) {
+    if (exponent === 0) return product;
+    if (exponent < 0) return powerIterator(base, exponent + 1, product / base);
+
+    return powerIterator(base, exponent - 1, product * base);
+}
+
+// helper functions
+
+function checkBaseExponent(base, exponent) {
     if (typeof base !== "number") {
         throw new Error("Parameter base must be of type number!");
     }
@@ -222,16 +242,7 @@ function power(base, exponent) {
         throw new Error("Parameter exponent must ne an integer number!");
     }
 
-    return powerIterator(base, exponent);
 }
-
-function powerIterator(base, exponent, product = 1) {
-    if (exponent === 0) return product;
-    if (exponent < 0) return powerIterator(base, exponent + 1, product / base);
-
-    return powerIterator(base, exponent - 1, product * base);
-}
-
 
 // Task 5: Lazy Evaluation and Generators
 function lazyMap(array, mapFunc) {
