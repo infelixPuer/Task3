@@ -188,6 +188,14 @@ function checkNum(num) {
 
 // Task 4: Recursion and Tail Call Optimization
 function calculateFactorial(num) {
+    if (typeof num !== "number") {
+        throw new Error("Parameter num must be of type number!");
+    }
+
+    if (num % 1 !== 0) {
+        throw new Error("Parameter num must ne an integer number!");
+    }
+
     return factIterator(num, 1);
 }
 
@@ -198,10 +206,59 @@ function factIterator(num, product) {
 }
 
 function power(base, exponent) {
-    if (exponent === 0) return 1;
-    if (exponent === 1) return base;
+    if (typeof base !== "number") {
+        throw new Error("Parameter base must be of type number!");
+    }
 
-    return power(base * base, --exponent);
+    if (base % 1 !== 0) {
+        throw new Error("Parameter base must ne an integer number!");
+    }
+
+    if (typeof exponent !== "number") {
+        throw new Error("Parameter exponent must be of type number!");
+    }
+
+    if (exponent % 1 !== 0) {
+        throw new Error("Parameter exponent must ne an integer number!");
+    }
+
+    return powerIterator(base, exponent);
 }
 
-export { calculateDiscountedPrice, calculateTotalPrice, getFullName, filterUniqueWords, getAverageGrade, createCounter, repeatFunction, calculateFactorial, power };
+function powerIterator(base, exponent, product = 1) {
+    if (exponent === 0) return product;
+    if (exponent < 0) return powerIterator(base, exponent + 1, product / base);
+
+    return powerIterator(base, exponent - 1, product * base);
+}
+
+
+// Task 5: Lazy Evaluation and Generators
+function lazyMap(array, mapFunc) {
+    let iterator = 0;
+    return {
+        next: function generator(){
+            if (iterator < array.length) {
+                array[iterator] = mapFunc(array[iterator++]);
+                let result = array[iterator];
+                return { value: result, done: false };
+            }
+
+            return { done: true };
+        }
+    }
+}
+
+function fibonacciGenerator() {
+    let value1= 0, value2 = 1;
+    return {
+        next: function() {
+            let result = value1;
+            [value1, value2] = [value2, value1 + value2];
+            return { value: result };
+        }
+    }
+
+}
+
+export { calculateDiscountedPrice, calculateTotalPrice, getFullName, filterUniqueWords, getAverageGrade, createCounter, repeatFunction, calculateFactorial, power, lazyMap, fibonacciGenerator };
