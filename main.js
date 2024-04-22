@@ -81,7 +81,8 @@ function filterUniqueWords(text) {
 
     let wordsArray = text.split(" ");
 
-    return wordsArray.filter(word => wordsArray.indexOf(word) === wordsArray.lastIndexOf(word)).sort();
+    return wordsArray.filter(word => wordsArray.findIndex(w => w === word.toLowerCase()) ===
+        wordsArray.findLastIndex(w => word.toLowerCase()));
 }
 
 function getAverageGrade(students) {
@@ -149,7 +150,7 @@ function checkStudents(students) {
     }
 
     for (let i = 0; i < students.length; ++i) {
-        if (typeof students[i].grades[0] === "number")
+        if (typeof students[i].grades[0] !== "number")
             throw new Error("Key grades of student object must be an array of numbers!");
     }
 }
